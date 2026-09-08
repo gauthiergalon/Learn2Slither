@@ -1,15 +1,11 @@
 # Q-table with pickle persistence (no JSON encode/decode)
 # Stores state -> action -> float mappings
-
 import pickle
 from collections.abc import Hashable
 from pathlib import Path
 import random
 from typing import Any
-
 from environment.direction import Direction
-
-
 DEFAULT_ACTIONS = tuple(Direction)
 
 
@@ -18,6 +14,7 @@ class ModelError(Exception):
 
 
 class QTable:
+
     def __init__(
         self,
         actions: tuple[Direction, ...] = DEFAULT_ACTIONS,
@@ -29,7 +26,8 @@ class QTable:
         self.q: dict = {}
 
     def get(self, state: Hashable, action: Direction) -> float:
-        return self.q.get(state, {a: self.default for a in self.actions}).get(action, 0.0)
+        default_state = {a: self.default for a in self.actions}
+        return self.q.get(state, default_state).get(action, 0.0)
 
     def set(self, state: Hashable, action: Direction, value: float) -> None:
         if state not in self.q:
@@ -45,7 +43,8 @@ class QTable:
         state_vals = self.q.get(state, {a: self.default for a in self.actions})
         best_value = max(state_vals[action] for action in available_actions)
         best_actions = tuple(
-            action for action in available_actions if state_vals[action] == best_value
+            action for action in available_actions
+            if state_vals[action] == best_value
         )
         return random.choice(best_actions)
 
@@ -75,8 +74,8 @@ class QTable:
             table.metadata = model.get("metadata", {})
             table.q = model.get("q", {})
             return table
-        except (OSError, pickle.UnpicklingError, KeyError, TypeError, ValueError) as error:
+        except (OSError, pickle.UnpicklingError, KeyError,
+                TypeError, ValueError) as error:
             raise ModelError(
                 f"Impossible de charger le modèle '{model_path}': {error}"
             ) from error
-

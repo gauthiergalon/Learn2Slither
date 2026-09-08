@@ -102,7 +102,8 @@ class Game:
             x, y = head_x, head_y
             while True:
                 positions.add((x, y))
-                if not 0 <= x < self.board.size or not 0 <= y < self.board.size:
+                if (not (0 <= x < self.board.size)
+                        or not (0 <= y < self.board.size)):
                     break
                 x += dx
                 y += dy
