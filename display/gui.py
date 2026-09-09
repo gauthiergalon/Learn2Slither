@@ -44,24 +44,22 @@ class GUI:
         top = round(y * self.cell_size)
         right = round((x + 1) * self.cell_size)
         bottom = round((y + 1) * self.cell_size)
-        rect = pygame.Rect(
-            left, top, right - left, bottom - top
-        )
+        rect = pygame.Rect(left, top, right - left, bottom - top)
         pygame.draw.rect(self.screen, color, rect)
 
     def render(self, board: Board) -> None:
         self.screen.fill(COLOR_BG)
 
-        for (x, y) in board.green_apples:
+        for x, y in board.green_apples:
             self.draw_cell(x, y, COLOR_GREEN_APPLE)
 
-        for (x, y) in board.red_apple:
+        for x, y in board.red_apple:
             self.draw_cell(x, y, COLOR_RED_APPLE)
 
         if board.snake.body:
             head_pos = board.snake.body[0]
             self.draw_cell(*head_pos, COLOR_SNAKE_BLUE)
-            for (x, y) in board.snake.body[1:]:
+            for x, y in board.snake.body[1:]:
                 self.draw_cell(x, y, COLOR_SNAKE_CYAN)
 
         self.draw_grid_lines()

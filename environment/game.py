@@ -53,7 +53,11 @@ class Game:
                 self.gui.render(self.board)
                 self.gui.tick()
                 self.terminal_observer.render(
-                    self.board, action, reward, done, step,
+                    self.board,
+                    action,
+                    reward,
+                    done,
+                    step,
                     self.max_steps,
                 )
             if done:

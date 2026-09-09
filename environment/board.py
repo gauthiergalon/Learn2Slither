@@ -3,12 +3,14 @@
 
 import random
 
+from environment.constants import (
+    REWARD_GAME_OVER,
+    REWARD_GREEN_APPLE,
+    REWARD_NOTHING,
+    REWARD_RED_APPLE,
+)
 from environment.direction import Direction
 from environment.snake import Food, Position, Snake
-from environment.constants import (
-    REWARD_GAME_OVER, REWARD_GREEN_APPLE, REWARD_RED_APPLE,
-    REWARD_NOTHING,
-)
 
 
 class Board:
@@ -65,8 +67,7 @@ class Board:
 
         # Encourage turning when no green apple is visible.
         visible_apple = any(
-            self.has_green_apple_on_ray(direction)
-            for direction in Direction
+            self.has_green_apple_on_ray(direction) for direction in Direction
         )
         if not visible_apple and action != previous_direction:
             reward -= 10.0

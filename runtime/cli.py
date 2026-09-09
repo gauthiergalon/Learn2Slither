@@ -8,24 +8,35 @@ def build_parser() -> argparse.ArgumentParser:
         description="Learn2Slither - snake reinforcement training.",
     )
     parser.add_argument(
-        "--map-size", "-map-size", type=int, default=10, dest="map_size",
+        "--map-size",
+        "-map-size",
+        type=int,
+        default=10,
+        dest="map_size",
         help="Size of the map (square).",
     )
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument(
-        "--train", action="store_true",
+        "--train",
+        action="store_true",
         help="Train the Q-learning agent without opening a window.",
     )
     mode.add_argument(
-        "--view", action="store_true",
+        "--view",
+        action="store_true",
         help="Display a trained model playing by itself.",
     )
     parser.add_argument(
-        "--episodes", type=int, default=1000,
+        "--episodes",
+        type=int,
+        default=1000,
         help="Number of training episodes.",
     )
     parser.add_argument(
-        "--max-steps", type=int, default=500, dest="max_steps",
+        "--max-steps",
+        type=int,
+        default=500,
+        dest="max_steps",
         help="Maximum number of steps per episode.",
     )
     parser.add_argument(
@@ -43,9 +54,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def validate_args(args: argparse.Namespace) -> None:
     if not (5 <= args.map_size <= 100):
-        raise ValueError(
-            "The size of the map must be between 5 and 100"
-        )
+        raise ValueError("The size of the map must be between 5 and 100")
     if args.episodes < 1:
         raise ValueError("The number of episodes must be positive")
     if args.max_steps < 1:

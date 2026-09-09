@@ -4,8 +4,15 @@ from environment.direction import Direction
 
 
 class TerminalObserver:
-    def render(self, board: Board, action: Direction, reward: float,
-               done: bool, step: int, max_steps: int) -> None:
+    def render(
+        self,
+        board: Board,
+        action: Direction,
+        reward: float,
+        done: bool,
+        step: int,
+        max_steps: int,
+    ) -> None:
         if len(board.snake.body) > 0:
             head_x, head_y = board.snake.head
         else:

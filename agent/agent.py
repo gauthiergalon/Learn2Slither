@@ -47,9 +47,11 @@ class Agent:
         return action
 
     def observe(self, board: Board, reward: float, done: bool) -> None:
-        if (not self.training
-                or self._last_state is None
-                or self._last_action is None):
+        if (
+            not self.training
+            or self._last_state is None
+            or self._last_action is None
+        ):
             return
         if done:
             next_value = 0.0
@@ -89,8 +91,12 @@ class Agent:
     @classmethod
     def state(cls, board: Board) -> State:
         return (board.snake.direction,) + tuple(
-            cls._ray(board, d) for d in (
-                Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.LEFT,
+            cls._ray(board, d)
+            for d in (
+                Direction.UP,
+                Direction.RIGHT,
+                Direction.DOWN,
+                Direction.LEFT,
             )
         )
 
@@ -111,9 +117,7 @@ class Agent:
         norm = max(
             1,
             ceil(
-                (len(positions) + 1)
-                / max(board.size, 1)
-                * DISTANCE_BUCKETS,
+                (len(positions) + 1) / max(board.size, 1) * DISTANCE_BUCKETS,
             ),
         )
         return (VISION_WALL, min(DISTANCE_BUCKETS, norm))

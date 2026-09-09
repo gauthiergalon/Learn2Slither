@@ -6,6 +6,7 @@ from pathlib import Path
 import random
 from typing import Any
 from environment.direction import Direction
+
 DEFAULT_ACTIONS = tuple(Direction)
 
 
@@ -14,7 +15,6 @@ class ModelError(Exception):
 
 
 class QTable:
-
     def __init__(
         self,
         actions: tuple[Direction, ...] = DEFAULT_ACTIONS,
@@ -43,7 +43,8 @@ class QTable:
         state_vals = self.q.get(state, {a: self.default for a in self.actions})
         best_value = max(state_vals[action] for action in available_actions)
         best_actions = tuple(
-            action for action in available_actions
+            action
+            for action in available_actions
             if state_vals[action] == best_value
         )
         return random.choice(best_actions)
@@ -53,12 +54,15 @@ class QTable:
         try:
             model_path.parent.mkdir(parents=True, exist_ok=True)
             with model_path.open("wb") as f:
-                pickle.dump({
-                    "version": 1,
-                    "actions": self.actions,
-                    "metadata": self.metadata,
-                    "q": self.q,
-                }, f)
+                pickle.dump(
+                    {
+                        "version": 1,
+                        "actions": self.actions,
+                        "metadata": self.metadata,
+                        "q": self.q,
+                    },
+                    f,
+                )
         except (OSError, TypeError, ValueError) as error:
             raise ModelError(
                 f"Impossible d'enregistrer le modèle '{model_path}': {error}"
@@ -74,8 +78,13 @@ class QTable:
             table.metadata = model.get("metadata", {})
             table.q = model.get("q", {})
             return table
-        except (OSError, pickle.UnpicklingError, KeyError,
-                TypeError, ValueError) as error:
+        except (
+            OSError,
+            pickle.UnpicklingError,
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as error:
             raise ModelError(
                 f"Impossible de charger le modèle '{model_path}': {error}"
             ) from error
