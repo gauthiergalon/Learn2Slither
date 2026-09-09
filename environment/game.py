@@ -1,6 +1,3 @@
-# Episode loop with terminal/GUI rendering
-# Wires agent and board; renders only visible cross by default
-
 from dataclasses import dataclass
 
 from environment.board import Board

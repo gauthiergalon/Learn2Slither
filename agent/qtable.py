@@ -1,5 +1,3 @@
-# Q-table with pickle persistence (no JSON encode/decode)
-# Stores state -> action -> float mappings
 import pickle
 from collections.abc import Hashable
 from pathlib import Path
@@ -11,7 +9,7 @@ DEFAULT_ACTIONS = tuple(Direction)
 
 
 class ModelError(Exception):
-    """Raised when a Q-table cannot be read or written."""
+    pass
 
 
 class QTable:

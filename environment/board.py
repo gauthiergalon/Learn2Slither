@@ -1,6 +1,3 @@
-# Game board: snake movement, collisions, apple spawn
-# Red apple as set; rewards from constants; optimized empty positions
-
 import random
 
 from environment.constants import (
@@ -67,7 +64,6 @@ class Board:
 
         reward = base_reward
 
-        # Encourage turning when no green apple is visible.
         visible_apple = any(
             self.has_green_apple_on_ray(direction) for direction in Direction
         )

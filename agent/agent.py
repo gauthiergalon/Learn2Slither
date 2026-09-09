@@ -1,6 +1,3 @@
-# Q-learning agent with compact ray vision (type, distance)
-# State: direction + 4 first-visible (code, dist) tuples
-
 import random
 from math import ceil
 from pathlib import Path

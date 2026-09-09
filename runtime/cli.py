@@ -1,4 +1,3 @@
-# Argument parser and validation for map size, episodes, model paths
 import argparse
 
 

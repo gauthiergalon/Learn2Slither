@@ -1,4 +1,3 @@
-# GUI rendering observer for snake game board
 import pygame
 
 from environment.board import Board

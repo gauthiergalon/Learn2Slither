@@ -1,6 +1,3 @@
-# CLI orchestration (train / view) with direct imports
-# Loads/saves Q-table via pickle; validates args
-
 from agent.qtable import ModelError
 from runtime.cli import build_parser, validate_args
 

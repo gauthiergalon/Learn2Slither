@@ -1,4 +1,3 @@
-# Entry point: delegates to runtime application
 import sys
 
 from runtime.application import main as run_application

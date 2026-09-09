@@ -1,4 +1,3 @@
-# Cardinal directions for snake movement (up, right, down, left)
 from enum import Enum
 
 
