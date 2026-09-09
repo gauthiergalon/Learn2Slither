@@ -25,7 +25,11 @@ class TerminalObserver:
             row = []
             for x in range(-1, board.size + 1):
                 pos = (x, y)
-                row.append(self.cell_symbol(board, pos) if pos in visible else " ")
+                if pos in visible:
+                    symbol = self.cell_symbol(board, pos)
+                else:
+                    symbol = " "
+                row.append(symbol)
             lines.append(" ".join(row))
         if done:
             lines.extend(["", "Episode finished."])
