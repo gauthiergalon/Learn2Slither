@@ -2,6 +2,20 @@
 
 A Snake game with a Pygame interface.
 
+### Installation
+
+Install `uv` with the official installer:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Restart the terminal, then install the project dependencies:
+
+```bash
+uv sync
+```
+
 ### Organization
 
 - `main.py`: minimal entry point.
@@ -81,4 +95,16 @@ The number of episodes and map size can be adjusted:
 
 ```bash
 uv run python main.py --map-size 15 --train --episodes 50000
+```
+
+### Uninstallation
+
+To uninstall `uv` and remove the executables installed by the official
+installer:
+
+```bash
+uv cache clean
+rm -r "$(uv python dir)"
+rm -r "$(uv tool dir)"
+rm ~/.local/bin/uv ~/.local/bin/uvx
 ```
