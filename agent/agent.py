@@ -5,6 +5,7 @@ import random
 from math import ceil
 from pathlib import Path
 
+from agent.config import DEFAULT_LEARNING_CONFIG
 from agent.qtable import QTable
 from environment.board import Board
 from environment.direction import Direction
@@ -19,11 +20,11 @@ class Agent:
         self,
         qtable: QTable | None = None,
         training: bool = False,
-        learning_rate: float = 0.1,
-        discount_factor: float = 0.9,
-        epsilon: float = 1.0,
-        epsilon_decay: float = 0.995,
-        minimum_epsilon: float = 0.05,
+        learning_rate: float = DEFAULT_LEARNING_CONFIG.learning_rate,
+        discount_factor: float = DEFAULT_LEARNING_CONFIG.discount_factor,
+        epsilon: float = DEFAULT_LEARNING_CONFIG.epsilon,
+        epsilon_decay: float = DEFAULT_LEARNING_CONFIG.epsilon_decay,
+        minimum_epsilon: float = DEFAULT_LEARNING_CONFIG.minimum_epsilon,
     ):
         self.qtable = qtable or QTable()
         self.training = training

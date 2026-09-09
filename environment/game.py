@@ -47,7 +47,7 @@ class Game:
             self.agent.observe(self.board, reward, done)
             total_reward += reward
             best_length = max(best_length, len(self.board.snake))
-            if self.gui is not None:
+            if self.gui is not None and self.terminal_observer is not None:
                 if not self.gui.running:
                     break
                 self.gui.render(self.board)

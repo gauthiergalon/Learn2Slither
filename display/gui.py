@@ -65,7 +65,7 @@ class GUI:
         self.draw_grid_lines()
         pygame.display.flip()
 
-    def tick(self, fps: int = 10):
+    def tick(self, fps: int = 20):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False

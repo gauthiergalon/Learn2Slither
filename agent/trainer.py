@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from agent.agent import Agent
+from agent.config import DEFAULT_LEARNING_CONFIG
 from environment.game import Game
 
 
@@ -16,11 +17,11 @@ class Trainer:
     def __init__(
         self,
         map_size: int,
-        learning_rate: float = 0.1,
-        discount_factor: float = 0.9,
-        epsilon: float = 1.0,
-        epsilon_decay: float = 0.999,
-        minimum_epsilon: float = 0.02,
+        learning_rate: float = DEFAULT_LEARNING_CONFIG.learning_rate,
+        discount_factor: float = DEFAULT_LEARNING_CONFIG.discount_factor,
+        epsilon: float = DEFAULT_LEARNING_CONFIG.epsilon,
+        epsilon_decay: float = DEFAULT_LEARNING_CONFIG.epsilon_decay,
+        minimum_epsilon: float = DEFAULT_LEARNING_CONFIG.minimum_epsilon,
         max_steps: int = 500,
     ):
         self.agent = Agent(
