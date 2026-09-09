@@ -1,6 +1,7 @@
 from enum import Enum
-from environment.direction import Direction
 from typing import Tuple
+
+from environment.direction import Direction
 
 Position = Tuple[int, int]
 

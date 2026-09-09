@@ -1,8 +1,9 @@
 import pickle
+import random
 from collections.abc import Hashable
 from pathlib import Path
-import random
 from typing import Any
+
 from environment.direction import Direction
 
 DEFAULT_ACTIONS = tuple(Direction)

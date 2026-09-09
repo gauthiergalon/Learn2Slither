@@ -1,10 +1,8 @@
-from agent.qtable import ModelError
-from runtime.cli import build_parser, validate_args
-
-
-from agent.trainer import Trainer
 from agent.agent import Agent
+from agent.qtable import ModelError
+from agent.trainer import Trainer
 from environment.game import Game
+from runtime.cli import build_parser, validate_args
 
 
 def run_training(

@@ -1,4 +1,5 @@
 import sys
+
 from environment.board import Board
 from environment.direction import Direction
 

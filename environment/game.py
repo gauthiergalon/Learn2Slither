@@ -1,9 +1,7 @@
 from dataclasses import dataclass
 
-from environment.board import Board
-
-
 from display.terminal import TerminalObserver
+from environment.board import Board
 
 
 @dataclass(frozen=True)
