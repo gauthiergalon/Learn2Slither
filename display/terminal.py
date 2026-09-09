@@ -58,7 +58,7 @@ class TerminalObserver:
             GREEN_COLOR if reward > 0 else RED_COLOR if reward < 0 else DIM_COLOR
         )
         lines = [
-            f"{WHITE_BOLD_COLOR}Learn2Slither - agent view{RESET_COLOR}",
+            f"{WHITE_BOLD_COLOR}Learn2Slither - agent view{RESET_COLOR}\n",
             self.label_line(
                 "Step",
                 f"{step:>{len(str(max_steps))}}/{max_steps}",
