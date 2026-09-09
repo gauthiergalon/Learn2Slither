@@ -38,11 +38,6 @@ decay `0.9995`, and minimum epsilon `0.02`.
 ### Training
 
 
-```bash
-uv run python main.py --train --map-size 10 --episodes 100000 \
-	--max-steps 500
-```
-
 Run Q-learning training without opening a window and save the trained model:
 
 ```bash
