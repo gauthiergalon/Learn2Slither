@@ -19,7 +19,7 @@ class Trainer:
         learning_rate: float = 0.1,
         discount_factor: float = 0.9,
         epsilon: float = 1.0,
-        epsilon_decay: float = 0.99995,
+        epsilon_decay: float = 0.999,
         minimum_epsilon: float = 0.02,
         max_steps: int = 500,
     ):

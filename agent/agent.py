@@ -2,6 +2,7 @@
 # State: direction + 4 first-visible (code, dist) tuples
 
 import random
+from math import ceil
 from pathlib import Path
 
 from agent.qtable import QTable
@@ -10,6 +11,7 @@ from environment.direction import Direction
 
 State = tuple
 VISION_WALL = 4
+DISTANCE_BUCKETS = 10
 
 
 class Agent:
@@ -45,11 +47,10 @@ class Agent:
         return action
 
     def observe(self, board: Board, reward: float, done: bool) -> None:
-        if not self.training:
+        if (not self.training
+                or self._last_state is None
+                or self._last_action is None):
             return
-        if self._last_state is None or self._last_action is None:
-            return
-
         if done:
             next_value = 0.0
         else:
@@ -58,7 +59,6 @@ class Agent:
                 self.qtable.get(next_state, action)
                 for action in board.available_actions()
             )
-
         current = self.qtable.get(self._last_state, self._last_action)
         target = reward + self.discount_factor * next_value
         self.qtable.set(
@@ -96,19 +96,24 @@ class Agent:
 
     @staticmethod
     def _ray(board: Board, direction: Direction) -> tuple[int, int]:
-        head_x, head_y = board.snake.head
-        dx, dy = direction.value
-        x, y = head_x + dx, head_y + dy
-        dist = 1
-        while board._is_inside((x, y)):
-            pos = (x, y)
+        positions = board.ray_positions(direction)
+        for dist, pos in enumerate(positions, start=1):
+            norm = max(
+                1,
+                ceil(dist / max(board.size, 1) * DISTANCE_BUCKETS),
+            )
             if pos in board.snake.body:
-                return (3, dist)
+                return (3, norm)
             if pos in board.green_apples:
-                return (1, dist)
+                return (1, norm)
             if pos in board.red_apple:
-                return (2, dist)
-            x += dx
-            y += dy
-            dist += 1
-        return (4, dist)
+                return (2, norm)
+        norm = max(
+            1,
+            ceil(
+                (len(positions) + 1)
+                / max(board.size, 1)
+                * DISTANCE_BUCKETS,
+            ),
+        )
+        return (VISION_WALL, min(DISTANCE_BUCKETS, norm))

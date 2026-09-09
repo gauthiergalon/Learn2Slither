@@ -6,7 +6,8 @@ import random
 from environment.direction import Direction
 from environment.snake import Food, Position, Snake
 from environment.constants import (
-    REWARD_GAME_OVER, REWARD_GREEN_APPLE, REWARD_RED_APPLE, REWARD_NOTHING,
+    REWARD_GAME_OVER, REWARD_GREEN_APPLE, REWARD_RED_APPLE,
+    REWARD_NOTHING,
 )
 
 
@@ -32,7 +33,7 @@ class Board:
         head_x, head_y = self.snake.head
         new_head = (head_x + dx, head_y + dy)
 
-        if not self._is_inside(new_head):
+        if not self.is_inside(new_head):
             self.game_over = True
             return REWARD_GAME_OVER, True
 
@@ -47,7 +48,28 @@ class Board:
         else:
             food = Food.NOTHING
 
+        previous_direction = self.snake.direction
         self.snake.move(action, food)
+
+        if len(self.snake.body) == 0:
+            self.game_over = True
+            return REWARD_GAME_OVER, True
+
+        base_reward = REWARD_NOTHING
+        if food is Food.GREEN:
+            base_reward = REWARD_GREEN_APPLE
+        elif food is Food.RED:
+            base_reward = REWARD_RED_APPLE
+
+        reward = base_reward
+
+        # Encourage turning when no green apple is visible.
+        visible_apple = any(
+            self.has_green_apple_on_ray(direction)
+            for direction in Direction
+        )
+        if not visible_apple and action != previous_direction:
+            reward -= 10.0
 
         if food is Food.RED:
             self.red_apple.clear()
@@ -60,11 +82,7 @@ class Board:
             self.game_over = True
             return REWARD_GAME_OVER, True
 
-        if food is Food.GREEN:
-            return REWARD_GREEN_APPLE, False
-        if food is Food.RED:
-            return REWARD_RED_APPLE, False
-        return REWARD_NOTHING, False
+        return reward, False
 
     def available_actions(self) -> tuple[Direction, ...]:
         return tuple(
@@ -73,9 +91,26 @@ class Board:
             if self.snake.can_change_direction(action)
         )
 
-    def _is_inside(self, pos: Position) -> bool:
+    def is_inside(self, pos: Position) -> bool:
         x, y = pos
         return 0 <= x < self.size and 0 <= y < self.size
+
+    def ray_positions(self, direction: Direction) -> tuple[Position, ...]:
+        head_x, head_y = self.snake.head
+        dx, dy = direction.value
+        positions: list[Position] = []
+        x, y = head_x + dx, head_y + dy
+        while self.is_inside((x, y)):
+            positions.append((x, y))
+            x += dx
+            y += dy
+        return tuple(positions)
+
+    def has_green_apple_on_ray(self, direction: Direction) -> bool:
+        return any(
+            position in self.green_apples
+            for position in self.ray_positions(direction)
+        )
 
     def _empty_positions(self) -> list[Position]:
         occupied = set(self.snake.body)

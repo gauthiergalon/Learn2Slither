@@ -1,16 +1,14 @@
-# Snake entity: direction, move, grow, shrink
-
-from enum import Enum, auto
-
+from enum import Enum
 from environment.direction import Direction
+from typing import Tuple
 
-Position = tuple[int, int]
+Position = Tuple[int, int]
 
 
 class Food(Enum):
-    NOTHING = auto()
-    GREEN = auto()
-    RED = auto()
+    NOTHING = 0
+    GREEN = 1
+    RED = 2
 
 
 class Snake:
@@ -33,9 +31,9 @@ class Snake:
     def move(self, direction: Direction, food: Food = Food.NOTHING) -> None:
         if self.can_change_direction(direction):
             self.direction = direction
-
         dx, dy = self.direction.value
         new_head = (self.head[0] + dx, self.head[1] + dy)
+
         self.body.insert(0, new_head)
         if food is not Food.GREEN:
             self.body.pop()
@@ -43,5 +41,5 @@ class Snake:
             self.shrink()
 
     def shrink(self) -> None:
-        if self.body:
+        if len(self.body) > 0:
             self.body.pop()

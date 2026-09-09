@@ -6,7 +6,8 @@ from environment.board import Board
 WINDOW_SIZE = 800
 COLOR_GRID_LINE = (200, 200, 200)
 COLOR_BG = (0, 0, 0)
-COLOR_SNAKE = (0, 0, 255)
+COLOR_SNAKE_BLUE = (0, 0, 255)
+COLOR_SNAKE_CYAN = (0, 255, 255)
 COLOR_GREEN_APPLE = (0, 255, 0)
 COLOR_RED_APPLE = (255, 0, 0)
 Color = tuple[int, int, int]
@@ -57,13 +58,19 @@ class GUI:
         for (x, y) in board.red_apple:
             self.draw_cell(x, y, COLOR_RED_APPLE)
 
-        for (x, y) in board.snake.body:
-            self.draw_cell(x, y, COLOR_SNAKE)
+        if board.snake.body:
+            head_pos = board.snake.body[0]
+            self.draw_cell(*head_pos, COLOR_SNAKE_BLUE)
+            for (x, y) in board.snake.body[1:]:
+                self.draw_cell(x, y, COLOR_SNAKE_CYAN)
 
         self.draw_grid_lines()
         pygame.display.flip()
 
     def tick(self, fps: int = 10):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
         self.clock.tick(fps)
 
     def close(self) -> None:
