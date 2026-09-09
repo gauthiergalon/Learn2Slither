@@ -52,8 +52,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def validate_args(args: argparse.Namespace) -> None:
-    if not (5 <= args.map_size <= 100):
-        raise ValueError("The size of the map must be between 5 and 100")
+    if not (9 <= args.map_size <= 100):
+        raise ValueError("The size of the map must be between 9 and 100")
     if args.episodes < 1:
         raise ValueError("The number of episodes must be positive")
     if args.max_steps < 1:

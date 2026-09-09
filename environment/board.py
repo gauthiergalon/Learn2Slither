@@ -9,17 +9,35 @@ from environment.constants import (
 from environment.direction import Direction
 from environment.snake import Food, Position, Snake
 
+INITIAL_SNAKE_LENGTH = 3
+EDGE_MARGIN = 3
+
 
 class Board:
     def __init__(self, size: int):
-        if size < 1:
-            raise ValueError("Board size must be positive")
+        minimum_size = INITIAL_SNAKE_LENGTH + 2 * EDGE_MARGIN
+        if size < minimum_size:
+            raise ValueError(
+                f"Board size must be at least {minimum_size}"
+            )
         self.size = size
         self.reset()
 
     def reset(self) -> None:
         self.game_over = False
-        self.snake = Snake([(self.size // 2, self.size // 2)])
+        head_x = random.randint(
+            EDGE_MARGIN + INITIAL_SNAKE_LENGTH - 1,
+            self.size - EDGE_MARGIN - 1,
+        )
+        head_y = random.randint(
+            EDGE_MARGIN,
+            self.size - EDGE_MARGIN - 1,
+        )
+        self.snake = Snake([
+            (head_x, head_y),
+            (head_x - 1, head_y),
+            (head_x - 2, head_y),
+        ])
         self.green_apples: list[Position] = []
         self.red_apple: set[Position] = set()
         self._spawn_new_green_apple()
