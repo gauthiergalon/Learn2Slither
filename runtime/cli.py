@@ -26,6 +26,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Display a trained model playing by itself.",
     )
     parser.add_argument(
+        "--step",
+        action="store_true",
+        help="Wait for a key press after each step in view mode.",
+    )
+    parser.add_argument(
         "--episodes",
         type=int,
         default=1000,
@@ -52,13 +57,15 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def validate_args(args: argparse.Namespace) -> None:
-    if not (9 <= args.map_size <= 100):
-        raise ValueError("The size of the map must be between 9 and 100")
+    if not (8 <= args.map_size <= 100):
+        raise ValueError("The size of the map must be between 8 and 100")
     if args.episodes < 1:
         raise ValueError("The number of episodes must be positive")
     if args.max_steps < 1:
         raise ValueError("The maximum number of steps must be positive")
     if args.save_model and not args.train:
         raise ValueError("--save-model requires --train")
+    if args.step and not args.view:
+        raise ValueError("--step requires --view")
     if args.view and args.load_model is None:
         raise ValueError("--view requires --load-model")

@@ -10,15 +10,15 @@ from environment.direction import Direction
 from environment.snake import Food, Position, Snake
 
 INITIAL_SNAKE_LENGTH = 3
-EDGE_MARGIN = 3
+MINIMUM_BOARD_SIZE = 8
+EDGE_MARGIN = 2
 
 
 class Board:
     def __init__(self, size: int):
-        minimum_size = INITIAL_SNAKE_LENGTH + 2 * EDGE_MARGIN
-        if size < minimum_size:
+        if size < MINIMUM_BOARD_SIZE:
             raise ValueError(
-                f"Board size must be at least {minimum_size}"
+                f"Board size must be at least {MINIMUM_BOARD_SIZE}"
             )
         self.size = size
         self.reset()

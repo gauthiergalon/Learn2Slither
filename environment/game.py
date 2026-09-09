@@ -18,6 +18,7 @@ class Game:
         max_steps: int = 100,
         render_enabled: bool = True,
         log_actions: bool = False,
+        step_by_step: bool = False,
     ):
         if max_steps < 1:
             raise ValueError("max_steps must be positive")
@@ -25,6 +26,7 @@ class Game:
         self.agent = agent
         self.max_steps = max_steps
         self.log_actions = log_actions
+        self.step_by_step = step_by_step
         self.gui = None
         self.terminal_observer = None
         if render_enabled:
@@ -56,7 +58,13 @@ class Game:
                     done,
                     step,
                     self.max_steps,
+                    qtable=self.agent.qtable,
+                    step_by_step=self.step_by_step,
                 )
+                if self.step_by_step and not done:
+                    self.gui.wait_for_step()
+                    if not self.gui.running:
+                        break
             if done:
                 break
 

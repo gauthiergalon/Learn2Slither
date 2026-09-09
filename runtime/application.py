@@ -30,13 +30,19 @@ def run_training(
         print(f"Model saved to {save_model}")
 
 
-def run_view(map_size: int, max_steps: int, model_path: str) -> None:
+def run_view(
+    map_size: int,
+    max_steps: int,
+    model_path: str,
+    step_by_step: bool = False,
+) -> None:
     agent = Agent(training=False)
     agent.load_model(model_path)
     game = Game(
         map_size,
         agent=agent,
         max_steps=max_steps,
+        step_by_step=step_by_step,
     )
     try:
         game.run_episode()
@@ -62,6 +68,11 @@ def main() -> None:
                 args.save_model,
             )
         elif args.view:
-            run_view(args.map_size, args.max_steps, args.load_model)
+            run_view(
+                args.map_size,
+                args.max_steps,
+                args.load_model,
+                args.step,
+            )
     except ModelError as error:
         parser.error(str(error))

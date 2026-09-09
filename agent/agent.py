@@ -1,5 +1,4 @@
 import random
-from math import ceil
 from pathlib import Path
 
 from agent.config import (
@@ -8,11 +7,16 @@ from agent.config import (
 )
 from agent.qtable import ModelError, QTable
 from environment.board import Board
+from environment.constants import (
+    CELL_BODY,
+    CELL_GREEN,
+    CELL_RED,
+    CELL_WALL,
+)
 from environment.direction import Direction
 
 State = tuple
-VISION_WALL = 4
-DISTANCE_BUCKETS = 10
+MAX_DISTANCE_BUCKET = 3
 
 
 class Agent:
@@ -119,23 +123,15 @@ class Agent:
         )
 
     @staticmethod
-    def _ray(board: Board, direction: Direction) -> tuple[int, int]:
+    def _ray(board: Board, direction: Direction) -> tuple[str, int]:
         positions = board.ray_positions(direction)
         for dist, pos in enumerate(positions, start=1):
-            norm = max(
-                1,
-                ceil(dist / max(board.size, 1) * DISTANCE_BUCKETS),
-            )
+            distance = min(dist, MAX_DISTANCE_BUCKET)
             if pos in board.snake.body:
-                return (3, norm)
+                return (CELL_BODY, distance)
             if pos in board.green_apples:
-                return (1, norm)
+                return (CELL_GREEN, distance)
             if pos in board.red_apple:
-                return (2, norm)
-        norm = max(
-            1,
-            ceil(
-                (len(positions) + 1) / max(board.size, 1) * DISTANCE_BUCKETS,
-            ),
-        )
-        return (VISION_WALL, min(DISTANCE_BUCKETS, norm))
+                return (CELL_RED, distance)
+        wall_distance = min(len(positions) + 1, MAX_DISTANCE_BUCKET)
+        return (CELL_WALL, wall_distance)

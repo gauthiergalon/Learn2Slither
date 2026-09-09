@@ -60,8 +60,9 @@ end of training.
 
 Models are saved in Pickle format. The `.pkl` extension is recommended, even
 though the path can be customized. The Q-table depends on the state
-representation; the model must be retrained after changing that
-representation.
+representation. Vision distances use fixed buckets (`1`, `2`, and `3+`), so
+the same model can be used on different map sizes. Models created with an
+older state representation must be retrained.
 
 For a larger map, train directly with the target map size:
 
@@ -79,12 +80,20 @@ uv run python main.py --view --map-size 10 \
 	--load-model models/snake.pkl
 ```
 
+To advance one step at a time, wait for the terminal prompt and press Enter:
+
+```bash
+uv run python main.py --view --step --map-size 10 \
+	--load-model models/snake.pkl
+```
+
 View mode does not modify the model. The game stops after `--max-steps` steps
 or when a collision ends the episode.
 
 During visualization, the terminal displays the selected direction, position,
-and the Snake's cross-shaped vision in real time. The screen is rewritten at
-each step instead of adding a new line.
+the three available state values (the opposite direction is ignored), and the
+Snake's cross-shaped vision in real time. The screen is rewritten at each step
+instead of adding a new line.
 
 The number of episodes and map size can be adjusted:
 

@@ -70,5 +70,15 @@ class GUI:
                 self.running = False
         self.clock.tick(fps)
 
+    def wait_for_step(self) -> None:
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    return
+                if event.type == pygame.KEYDOWN:
+                    return
+            self.clock.tick(30)
+
     def close(self) -> None:
         pygame.quit()

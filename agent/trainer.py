@@ -27,8 +27,8 @@ class Trainer:
         minimum_epsilon: float = DEFAULT_LEARNING_CONFIG.minimum_epsilon,
         max_steps: int = 500,
     ):
-        if not 9 <= map_size <= 100:
-            raise ValueError("map_size must be between 9 and 100")
+        if not 8 <= map_size <= 100:
+            raise ValueError("map_size must be between 8 and 100")
         if max_steps < 1:
             raise ValueError("max_steps must be positive")
         validate_learning_parameters(
