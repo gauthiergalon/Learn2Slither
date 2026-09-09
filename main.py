@@ -12,5 +12,5 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
-        print("\nOpération interrompue.", file=sys.stderr)
+        print("\nOperation interrupted.", file=sys.stderr)
         raise SystemExit(130)

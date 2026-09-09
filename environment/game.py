@@ -24,6 +24,8 @@ class Game:
         render_enabled: bool = True,
         log_actions: bool = False,
     ):
+        if max_steps < 1:
+            raise ValueError("max_steps must be positive")
         self.board = Board(map_size)
         self.agent = agent
         self.max_steps = max_steps

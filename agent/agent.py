@@ -5,8 +5,11 @@ import random
 from math import ceil
 from pathlib import Path
 
-from agent.config import DEFAULT_LEARNING_CONFIG
-from agent.qtable import QTable
+from agent.config import (
+    DEFAULT_LEARNING_CONFIG,
+    validate_learning_parameters,
+)
+from agent.qtable import ModelError, QTable
 from environment.board import Board
 from environment.direction import Direction
 
@@ -26,6 +29,13 @@ class Agent:
         epsilon_decay: float = DEFAULT_LEARNING_CONFIG.epsilon_decay,
         minimum_epsilon: float = DEFAULT_LEARNING_CONFIG.minimum_epsilon,
     ):
+        validate_learning_parameters(
+            learning_rate,
+            discount_factor,
+            epsilon,
+            epsilon_decay,
+            minimum_epsilon,
+        )
         self.qtable = qtable or QTable()
         self.training = training
         self.learning_rate = learning_rate
@@ -87,7 +97,17 @@ class Agent:
         self.qtable = QTable.load(path)
         saved_epsilon = self.qtable.metadata.get("epsilon")
         if saved_epsilon is not None:
-            self.epsilon = max(self.minimum_epsilon, float(saved_epsilon))
+            try:
+                loaded_epsilon = float(saved_epsilon)
+            except (TypeError, ValueError) as error:
+                raise ModelError(
+                    "Model metadata contains an invalid epsilon"
+                ) from error
+            if not 0 <= loaded_epsilon <= 1:
+                raise ModelError(
+                    "Model metadata epsilon must be between 0 and 1"
+                )
+            self.epsilon = max(self.minimum_epsilon, loaded_epsilon)
 
     @classmethod
     def state(cls, board: Board) -> State:

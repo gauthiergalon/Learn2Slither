@@ -15,6 +15,8 @@ from environment.snake import Food, Position, Snake
 
 class Board:
     def __init__(self, size: int):
+        if size < 1:
+            raise ValueError("Board size must be positive")
         self.size = size
         self.reset()
 

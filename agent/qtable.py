@@ -65,7 +65,7 @@ class QTable:
                 )
         except (OSError, TypeError, ValueError) as error:
             raise ModelError(
-                f"Impossible d'enregistrer le modèle '{model_path}': {error}"
+                f"Unable to save model '{model_path}': {error}"
             ) from error
 
     @classmethod
@@ -80,11 +80,15 @@ class QTable:
             return table
         except (
             OSError,
+            EOFError,
             pickle.UnpicklingError,
+            AttributeError,
             KeyError,
+            IndexError,
+            ImportError,
             TypeError,
             ValueError,
         ) as error:
             raise ModelError(
-                f"Impossible de charger le modèle '{model_path}': {error}"
+                f"Unable to load model '{model_path}': {error}"
             ) from error

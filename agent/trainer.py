@@ -2,7 +2,10 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from agent.agent import Agent
-from agent.config import DEFAULT_LEARNING_CONFIG
+from agent.config import (
+    DEFAULT_LEARNING_CONFIG,
+    validate_learning_parameters,
+)
 from environment.game import Game
 
 
@@ -24,6 +27,17 @@ class Trainer:
         minimum_epsilon: float = DEFAULT_LEARNING_CONFIG.minimum_epsilon,
         max_steps: int = 500,
     ):
+        if not 5 <= map_size <= 100:
+            raise ValueError("map_size must be between 5 and 100")
+        if max_steps < 1:
+            raise ValueError("max_steps must be positive")
+        validate_learning_parameters(
+            learning_rate,
+            discount_factor,
+            epsilon,
+            epsilon_decay,
+            minimum_epsilon,
+        )
         self.agent = Agent(
             training=True,
             learning_rate=learning_rate,
@@ -50,6 +64,8 @@ class Trainer:
         self.agent.load_model(path)
 
     def train(self, episodes: int) -> TrainingStats:
+        if episodes < 1:
+            raise ValueError("episodes must be positive")
         rewards: list[float] = []
         best_score = 0
 
